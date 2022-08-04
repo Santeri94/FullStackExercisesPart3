@@ -100,4 +100,4 @@ app.post('/api/persons', (request, response) => {
     console.log(`Server running on port ${PORT}`)
   })
   // 3.1 -> 3.7 tehty
-  // koko softa internettiin on kesken!
+  // 3.c alkaa....->
