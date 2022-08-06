@@ -21,15 +21,10 @@ app.get('/api/persons', (request, response) => {
   })
   })
 
-app.get('/api/persons/:id', (request, response) => {   
-    const id = Number(request.params.id)     // request params hakee url/path ja hakee numeroa? vai ID? Number vaihtaa id string to number
-    const person = persons.find(person => person.id === id)   // find id that matches the parameter...persons/id ja assign se "person"
-  
-    if (person) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
+app.get('/api/notes/:id', (request, response) => {
+  Note.findById(request.params.id).then(person => {
+    response.json(person)
+    })
   })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -61,17 +56,16 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({ 
             error: 'name has to be unique' 
     })}
-    
 
-    const person = {
+    const person = new Person({
       id: generateId(),
       name: body.name,
       number: body.number,
-      }
+    })
   
-    persons = persons.concat(person)
-  
-    response.json(person)    // hox POST-method nii halutaa et vastataan yhdellä "ihmisellä" jotta se POSTAA sivulle uuden henkilö
+    person.save().then(savedPerson => {
+      response.json(savedPerson)
+    })
   })
 
   
