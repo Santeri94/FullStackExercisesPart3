@@ -22,7 +22,7 @@ app.get('/api/persons', (request, response) => {
   })
 
 app.get('/api/notes/:id', (request, response) => {
-  Note.findById(request.params.id).then(person => {
+  Person.findById(request.params.id).then(person => {
     response.json(person)
     })
   })
