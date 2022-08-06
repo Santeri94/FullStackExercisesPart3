@@ -9,7 +9,7 @@ const password = process.argv[2]  // määritetää komentoriville parametrit
 const name = process.argv[3]      // Hox alempana sit assign paramterit niille kuuluviin arvoihi
 const number = process.argv[4]
 
-const url =`mongodb+srv://Santeri:Luka-2019@cluster0.d4yu1vj.mongodb.net/?retryWrites=true&w=majority`
+const url =`mongodb+srv://Santeri:<password>@cluster0.d4yu1vj.mongodb.net/?retryWrites=true&w=majority`
 // Mongodb urli ja alempana connect urlii
 mongoose.connect(url)
 
