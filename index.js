@@ -52,10 +52,6 @@ app.post('/api/persons', (request, response) => {
             error: 'number missing' 
           })
     }
-    if (persons.find(person => person.name === body.name)) {
-        return response.status(400).json({ 
-            error: 'name has to be unique' 
-    })}
 
     const person = new Person({
       id: generateId(),
@@ -73,5 +69,3 @@ app.post('/api/persons', (request, response) => {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
-  // 3.1 -> 3.7 tehty
-  // 3.c alkaa....->
