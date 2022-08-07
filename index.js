@@ -43,13 +43,8 @@ app.get('/api/persons/:id', (request, response, next) => {  // haetaa id urlissa
       .catch(error => next(error))
   })
 
-const generateId = () => {
-    const min = Math.ceil(0)
-    const max = Math.floor(10000)
-    const randomID =  Math.floor(Math.random() * (max - min + 1) + min)
-    return (randomID)}
 
-app.post('/api/persons', (request, response) => {   
+app.post('/api/persons', (request, response, next) => {   
     const body = request.body                  // HOX! body on tärkeä koska se hakee contenttia->se pitää määrittää
 
     if (!body.name) {
@@ -64,16 +59,31 @@ app.post('/api/persons', (request, response) => {
     }
 
     const person = new Person({
-      id: generateId(),
       name: body.name,
-      number: body.number,
+      number: body.number
     })
   
     person.save().then(savedPerson => {
       response.json(savedPerson)
     })
   })
-  const errorHandler = (error, request, response, next) => {
+
+app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+  
+    const person = {
+      name: body.name,
+      number: body.number
+    }
+  
+    Person.findByIdAndUpdate(request.params.id, note, { new: true })
+      .then(updatedPerson => {
+        response.json(updatedPerson)
+      })
+      .catch(error => next(error))
+  })
+
+  const errorHandler = (error, request, response, next) => {  // errorhandler == middleware
     console.error(error.message)
   
     if (error.name === 'CastError') {
