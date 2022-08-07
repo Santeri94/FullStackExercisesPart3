@@ -10,10 +10,11 @@ app.use(cors())
 const Person = require('./models/person')
 
 app.get('/info', (request, response) => {
-    const entries = persons.length
-    const date = new Date ()
-    response.send(`<p>Phonebook has info for ${entries} people</p> <p>${date}</p>`)
+  const date = new Date ()
+  Person.find({}).then(persons => {
+    response.send(`<p>Phonebook has info for ${persons.length} people</p> <p>${date}</p>`)
   })
+})
   
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -35,7 +36,7 @@ app.get('/api/persons/:id', (request, response, next) => {  // haetaa id urlissa
    // next metodii joka sit printtaa errorin näytölle
    // errorit määritellää errorhandlerissa alempana ja annetaa omat selitykset erroreille...
 
-   app.delete('/api/persons/:id', (request, response, next) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)  // poistetaan annettu id databasesta
       .then(result => {           // jos ei löydy id nii sama errori -> errorhandleriin
         response.status(204).end()
@@ -68,7 +69,7 @@ app.post('/api/persons', (request, response, next) => {
     })
   })
 
-app.put('/api/persons/:id', (request, response, next) => {
+app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HOX PUT
     const body = request.body
   
     const person = {
@@ -76,7 +77,7 @@ app.put('/api/persons/:id', (request, response, next) => {
       number: body.number
     }
   
-    Person.findByIdAndUpdate(request.params.id, note, { new: true })
+    Person.findByIdAndUpdate(request.params.id, person, { new: true }) 
       .then(updatedPerson => {
         response.json(updatedPerson)
       })
@@ -103,3 +104,4 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   //eli alota tai tsekkaa onko 3.16 valmis
   //delete pitäs toimia
+  // 3.18 valmis
