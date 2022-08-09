@@ -22,7 +22,7 @@ app.get('/api/persons', (request, response) => {
   })
   })
 
-app.get('/api/persons/:id', (request, response, next) => {  // haetaa id urlissa ja saadaa vastaavan id tiedot
+app.get('/api/persons/:id', (request, response, next) => {  
   Person.findById(request.params.id).then(person => {
     if (person) {
       response.json(person)
@@ -31,14 +31,12 @@ app.get('/api/persons/:id', (request, response, next) => {  // haetaa id urlissa
       response.status(404).end()
     }
   })
-  .catch(error => next(error)) // jos laitetaa väärä id nii kertoo mikä vikana
-  })    // eli siis kun mentii elsen kautta ja saatii errori ni catch hoitaa errorin ja siirtää sen
-   // next metodii joka sit printtaa errorin näytölle
-   // errorit määritellää errorhandlerissa alempana ja annetaa omat selitykset erroreille...
+  .catch(error => next(error)) 
+  })    
 
 app.delete('/api/persons/:id', (request, response, next) => {
-    Person.findByIdAndRemove(request.params.id)  // poistetaan annettu id databasesta
-      .then(result => {           // jos ei löydy id nii sama errori -> errorhandleriin
+    Person.findByIdAndRemove(request.params.id) 
+      .then(result => {          
         response.status(204).end()
       })
       .catch(error => next(error))
@@ -46,7 +44,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 
 app.post('/api/persons', (request, response, next) => {   
-    const body = request.body                  // HOX! body on tärkeä koska se hakee contenttia->se pitää määrittää
+    const body = request.body                  
 
     if (!body.name) {
         return response.status(400).json({ 
@@ -70,7 +68,7 @@ app.post('/api/persons', (request, response, next) => {
     .catch(error => next(error))
   })
 
-app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HOX PUT
+app.put('/api/persons/:id', (request, response, next) => {
     const { name, number } = request.body
   
     Person.findByIdAndUpdate(request.params.id, {name, number}, 
@@ -81,7 +79,7 @@ app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HO
       .catch(error => next(error))
   })
 
-  const errorHandler = (error, request, response, next) => {  // errorhandler == middleware
+  const errorHandler = (error, request, response, next) => {  
     console.error(error.message)
   
     if (error.name === 'CastError') {
@@ -93,7 +91,6 @@ app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HO
     next(error)
   }
   
-  // tämä tulee kaikkien muiden middlewarejen rekisteröinnin jälkeen!
   app.use(errorHandler)
   
   const PORT = process.env.PORT
@@ -101,6 +98,3 @@ app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HO
     console.log(`Server running on port ${PORT}`)
   })
 
-  //eli alota tai tsekkaa onko 3.16 valmis
-  //delete pitäs toimia
-  // 3.18 valmis  tee 3.d tehtävät->clean koodi ja kommat ja sit tsek mitkä tehtävät teit ja palauta!

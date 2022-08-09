@@ -11,12 +11,12 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
-const personSchema = new mongoose.Schema({   // Schema eli missäs muodossa olio tulee databasee ja mitä arvoja
+const personSchema = new mongoose.Schema({  
     name: {
       type: String,
       minlength: 3,
       required: true
-    },                              // Määritetää vaa et mis muodossa "string" etc...
+    },                            
     number: String
   })
 
