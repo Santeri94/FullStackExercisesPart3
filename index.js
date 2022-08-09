@@ -67,17 +67,14 @@ app.post('/api/persons', (request, response, next) => {
     person.save().then(savedPerson => {
       response.json(savedPerson)
     })
+    .catch(error => next(error))
   })
 
 app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HOX PUT
-    const body = request.body
+    const { name, number } = request.body
   
-    const person = {
-      name: body.name,
-      number: body.number
-    }
-  
-    Person.findByIdAndUpdate(request.params.id, person, { new: true }) 
+    Person.findByIdAndUpdate(request.params.id, {name, number}, 
+      { new: true, runValidators: true, context: 'query' }) 
       .then(updatedPerson => {
         response.json(updatedPerson)
       })
@@ -90,6 +87,8 @@ app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HO
     if (error.name === 'CastError') {
       return response.status(400).send({ error: 'malformatted id' })
     }
+    else if (error.name === 'ValidationError') {
+      return response.status(400).json({ error: error.message })}
   
     next(error)
   }
@@ -104,4 +103,4 @@ app.put('/api/persons/:id', (request, response, next) => { // muokataa numero HO
 
   //eli alota tai tsekkaa onko 3.16 valmis
   //delete pitäs toimia
-  // 3.18 valmis
+  // 3.18 valmis  tee 3.d tehtävät->clean koodi ja kommat ja sit tsek mitkä tehtävät teit ja palauta!

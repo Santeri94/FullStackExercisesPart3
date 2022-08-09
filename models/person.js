@@ -12,7 +12,11 @@ mongoose.connect(url)
   })
 
 const personSchema = new mongoose.Schema({   // Schema eli missäs muodossa olio tulee databasee ja mitä arvoja
-    name: String,                              // Määritetää vaa et mis muodossa "string" etc...
+    name: {
+      type: String,
+      minlength: 3,
+      required: true
+    },                              // Määritetää vaa et mis muodossa "string" etc...
     number: String
   })
 
